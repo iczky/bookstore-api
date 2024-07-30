@@ -1,5 +1,6 @@
 package com.bookstore.demo.books.entity;
 
+import com.bookstore.demo.category.entity.Category;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -18,4 +19,8 @@ public class Book {
     private String publisher;
 
     private String isbn;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    private Category category;
 }

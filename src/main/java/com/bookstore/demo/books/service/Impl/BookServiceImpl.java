@@ -4,6 +4,8 @@ import com.bookstore.demo.books.dto.CreateBookRequestDto;
 import com.bookstore.demo.books.entity.Book;
 import com.bookstore.demo.books.repository.BookRepository;
 import com.bookstore.demo.books.service.BookService;
+import com.bookstore.demo.category.entity.Category;
+import com.bookstore.demo.category.service.CategoryService;
 import com.bookstore.demo.exceptions.DataNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +15,11 @@ import java.util.Optional;
 @Service
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
+    private final CategoryService categoryService;
 
-    public BookServiceImpl(BookRepository bookRepository) {
+    public BookServiceImpl(BookRepository bookRepository, CategoryService categoryService) {
         this.bookRepository = bookRepository;
+        this.categoryService = categoryService;
     }
 
     @Override
@@ -35,11 +39,14 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void saveBook(CreateBookRequestDto dto) {
+        Category category = categoryService.findCategoryById(dto.getCategoryId());
+
         Book book = new Book();
         book.setAuthor(dto.getAuthor());
         book.setTitle(dto.getTitle());
         book.setPublisher(dto.getPublisher());
         book.setIsbn(dto.getIsbn());
+        book.setCategory(category);
         bookRepository.save(book);
     }
 

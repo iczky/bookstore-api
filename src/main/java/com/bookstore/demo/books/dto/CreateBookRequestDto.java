@@ -8,4 +8,5 @@ public class CreateBookRequestDto {
     private String author;
     private String isbn;
     private String publisher;
+    private Long categoryId;
 }
